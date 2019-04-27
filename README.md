@@ -28,3 +28,10 @@ Right : Predicted image
 ![prediction3](https://user-images.githubusercontent.com/35373553/56850396-f15f0000-693c-11e9-8a5e-effd31c5face.png)
 
 ![prediction4](https://user-images.githubusercontent.com/35373553/56850397-f15f0000-693c-11e9-8d85-75dd487b4276.png)
+
+
+## accuracy
+![acc](https://user-images.githubusercontent.com/35373553/56850528-d4c3c780-693e-11e9-9ee4-effc3d63ef65.png)
+
+## loss
+![loss](https://user-images.githubusercontent.com/35373553/56850527-d4c3c780-693e-11e9-8ae9-fdf28eb1b4c2.png)
