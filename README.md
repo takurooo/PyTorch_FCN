@@ -16,6 +16,28 @@ PyTorch implementation of
 3 `python predict.py`  
 4 Start prediction and show result images.
 
+args.json
+```json
+{
+    "train": {
+        "model": "FCN8s",
+        "train_img_dir": "data/train/img",
+        "train_gt_dir": "data/train/gt",
+        "val_img_dir": "data/val/img",
+        "val_gt_dir": "data/val/gt",
+        "epochs": 1,
+        "batch_size": 24,
+        "log_dir": "log"
+    },
+    "predict": {
+        "model": "FCN8s",
+        "img_dir": "data/val/img",
+        "log_dir": "log",
+        "weight_path": "log/fcn8s.pt"
+    }
+}
+```
+
 
 # Results
 Left : Input image  
