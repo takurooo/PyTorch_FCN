@@ -53,7 +53,7 @@ Right : Predicted image
 
 
 ## accuracy(PASCAL VOC2012)
-![acc](https://user-images.githubusercontent.com/35373553/56850528-d4c3c780-693e-11e9-9ee4-effc3d63ef65.png)
+![acc](https://user-images.githubusercontent.com/35373553/62005069-a08fbb00-b168-11e9-91a4-ecefbf5ed32e.png)
 
 ## loss(PASCAL VOC2012)
-![loss](https://user-images.githubusercontent.com/35373553/56850527-d4c3c780-693e-11e9-8ae9-fdf28eb1b4c2.png)
+![loss](https://user-images.githubusercontent.com/35373553/62005068-9ff72480-b168-11e9-9cac-18f8043c7266.png)

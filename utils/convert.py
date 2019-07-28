@@ -1,19 +1,23 @@
-#-------------------------------------------
+# -------------------------------------------
 # import
-#-------------------------------------------
+# -------------------------------------------
 import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image
 
 import torch
-#-----------------------------------------
+# -----------------------------------------
 # defines
-#-----------------------------------------
+# -----------------------------------------
 
-#-----------------------------------------
+# -----------------------------------------
 # functions
-#-----------------------------------------
+# -----------------------------------------
+
+
 def make_cmap():
+    """ Make PASCAL VOC color map
+    """
     ctbl = ((0x80, 0, 0), (0, 0x80, 0), (0, 0, 0x80),
             (0x40, 0, 0), (0, 0x40, 0), (0, 0, 0x40),
             (0x20, 0, 0), (0, 0x20, 0))
@@ -36,12 +40,12 @@ def make_cmap():
 def pil_to_tensor(pil_img):
     """ Convert from PIL to tensor
      # Arguments
-            pil_img: array, 3 dimention(H x W x C)
+            pil_img: pil img, 3 dimention(H x W x C)
     """
     img = np.array(pil_img, copy=False)
-    img = img.transpose((2, 0, 1)) # H x W x C -> C x H x W
-    img = img.astype(np.float32) # uint8 -> float32
-    img = torch.from_numpy(img) # ndarray -> tensor
+    img = img.transpose((2, 0, 1))  # H x W x C -> C x H x W
+    img = img.astype(np.float32)  # uint8 -> float32
+    img = torch.from_numpy(img)  # ndarray -> tensor
     img.div_(255)
     return img
 
@@ -51,9 +55,9 @@ def tensor_to_pil(tesnor_img):
      # Arguments
             tesnor_img: tensor, 3 dimention(C x H x W )
     """
-    img = tesnor_img.mul(255).numpy() # tensor -> ndarray
-    img = np.array(img, dtype=np.uint8) # float32 -> uint8
-    img = img.transpose(1,2,0) # C x H x W -> H x W x C
+    img = tesnor_img.mul(255).numpy()  # tensor -> ndarray
+    img = np.array(img, dtype=np.uint8)  # float32 -> uint8
+    img = img.transpose(1, 2, 0)  # C x H x W -> H x W x C
     return Image.fromarray(img)
 
 
@@ -62,24 +66,25 @@ def tensor_to_ndarray(tesnor_img):
      # Arguments
             tesnor_img: tensor, 3 dimention(C x H x W )
     """
-    img = tesnor_img.mul(255).numpy() # tensor -> ndarray
-    img = np.array(img, dtype=np.uint8) # float32 -> uint8
-    img = img.transpose(1,2,0) # C x H x W -> H x W x C
+    img = tesnor_img.mul(255).numpy()  # tensor -> ndarray
+    img = np.array(img, dtype=np.uint8)  # float32 -> uint8
+    img = img.transpose(1, 2, 0)  # C x H x W -> H x W x C
     return img
-
 
 
 def pil_to_one_hot_array(label_array, classes, size):
     """ Convert from PIL to one-hot-array
      # Arguments
-            label_array: array, 3 dimention(H x W x C)
+            label_array: ndarray, 3 dimention(H x W x C)
             classes: int, num of class
-            size: int, image shape
+            size: int, image size
     """
-    x = np.zeros((classes, size, size)) # C x H x W
+    x = np.zeros((classes, size, size))  # C x H x W
+
     for i in range(size):
         for j in range(size):
             x[label_array[i][j], i, j] = 1
+
     return x
 
 
@@ -89,23 +94,24 @@ def pred_to_pil(pred):
             pred: tensor, 3 dimention(C x H x W)
     """
     cmap = make_cmap()
-    
-    pred_ = pred.numpy() # tensor -> ndarray
+
+    pred_ = pred.numpy()  # tensor -> ndarray
     channel, _, _ = pred_.shape
-    pred_ = pred_.transpose(1, 2, 0) # C x H x W -> H x W x C
-    pred_ = np.argmax(pred_, axis=2) #  H x W x C -> H x W
-    
+    pred_ = pred_.transpose(1, 2, 0)  # C x H x W -> H x W x C
+    pred_ = np.argmax(pred_, axis=2)  # H x W x C -> H x W
+
     row, col = pred_.shape
     dst = np.ones((row, col, 3))
-    
+
     for i in range(channel):
         dst[pred_ == i] = cmap[i]
 
     dst = dst.astype(np.uint8)
-    return  Image.fromarray(dst) # ndarray -> PIL
+    return Image.fromarray(dst)  # ndarray -> PIL
 
-#-----------------------------------------
+
+# -----------------------------------------
 # main
-#-----------------------------------------
+# -----------------------------------------
 if __name__ == '__main__':
     pass

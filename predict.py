@@ -1,32 +1,30 @@
-#-------------------------------------------
+# -------------------------------------------
 # import
-#-------------------------------------------
-import os, sys
+# -------------------------------------------
+import os
+import sys
 import argparse
 import json
 
 import matplotlib.pyplot as plt
-from PIL import Image
-
 import torch
-import torch.nn as nn
-import torch.optim as optim
 
 from dataset import SemSegDataset
-from utils import list_util
 from utils import convert
 from models import build_encorder_resnet18, build_fcn
-#-------------------------------------------
+# -------------------------------------------
 # defines
-#-------------------------------------------
+# -------------------------------------------
 CUR_PATH = os.path.join(os.path.dirname(__file__))
 JSON_PATH = os.path.join(CUR_PATH, 'args.json')
 
 N_CLASS = 21
 INPUT_SIZE = 224
-#-------------------------------------------
+# -------------------------------------------
 # private functions
-#-------------------------------------------
+# -------------------------------------------
+
+
 def get_args():
     with open(JSON_PATH, "r") as f:
         j = json.load(f)
@@ -42,7 +40,8 @@ def show_imgs(imgs, size, save_path=None, figsize=[6.4, 4.8], converter=False):
     """
     row, col = size
     if len(imgs) != (row * col):
-        raise ValueError("Invalid imgs len:{} col:{} row:{}".format(len(imgs), row, col))
+        raise ValueError(
+            "Invalid imgs len:{} col:{} row:{}".format(len(imgs), row, col))
 
     plt.figure(figsize=figsize)
     plt.tight_layout()
@@ -66,10 +65,10 @@ def predict(model, device, imgs):
     if len(imgs.size()) != 4:
         imgs = imgs.unsqueeze(0)
     imgs = imgs.to(device)
-    
+
     with torch.no_grad():
         output = model(imgs)
-        
+
     return output
 
 
@@ -90,14 +89,12 @@ def main(args):
     '''
     test_dataset = SemSegDataset(N_CLASS, INPUT_SIZE, img_dir, train=False)
 
-
     '''
     Create Model
     '''
     encorder = build_encorder_resnet18()
     model = build_fcn(model_name, num_classes=21, encorder=encorder)
     # print(model)
-
 
     '''
     Load Weight
@@ -107,7 +104,6 @@ def main(args):
     else:
         print("not exists weight : ", weight_path)
 
-
     '''
     Predict
     '''
@@ -115,16 +111,15 @@ def main(args):
     model.to(device)
     out = predict(model, device, img)
 
-
     '''
     Save model state_dict
     '''
     out_pil = convert.pred_to_pil(out[0])
     input_pil = convert.tensor_to_pil(img)
     img_list = [input_pil, out_pil]
-    show_imgs(img_list, [1, 2], 
+    show_imgs(img_list, [1, 2],
               save_path="predict_{}.png".format(img_idx),
-              figsize=(10,5))
+              figsize=(10, 5))
 
 
 if __name__ == '__main__':
